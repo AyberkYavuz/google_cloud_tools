@@ -132,6 +132,10 @@ def trigger_dataflow(data, context):
         print(f'Dataflow job launched for {folder_name}: {response}')
 ```
 
+The google cloud function code also is given as a python file.
+
+[google_cloud_function_code.py](https://github.com/AyberkYavuz/google_cloud_tools/blob/main/google_cloud_function_code.py)
+
 ## Deploying the Cloud Function
 
 Deploy the Cloud Function using the gcloud command:
