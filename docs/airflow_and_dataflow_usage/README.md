@@ -123,7 +123,7 @@ with DAG(
 
 Airflow code also is given as a python file.
 
-[dataflow_code.py](https://github.com/AyberkYavuz/google_cloud_tools/blob/main/airflow_dag_code.py)
+[airflow_dag_code.py](https://github.com/AyberkYavuz/google_cloud_tools/blob/main/airflow_dag_code.py)
 
 ## Setup and Configuration
 
@@ -155,3 +155,88 @@ pip install apache-airflow-providers-google
 2. Configure Airflow Connections:
 
 Set up a Google Cloud connection (google_cloud_default) in the Airflow Admin UI or use the command line to configure.
+
+## Deployment
+
+### Dataflow Template Creation
+
+dataflow_code:
+
+```python
+import apache_beam as beam
+from apache_beam.options.pipeline_options import PipelineOptions
+from apache_beam.io.gcp.bigquery import WriteToBigQuery
+
+
+def run(argv=None):
+    pipeline_options = PipelineOptions(argv)
+    input_file = pipeline_options.view_as(PipelineOptions).input_file
+    output_table = pipeline_options.view_as(PipelineOptions).output_table
+
+    p = beam.Pipeline(options=pipeline_options)
+
+    # Read Parquet files
+    parquet_data = p | 'ReadParquet' >> beam.io.ReadFromParquet(input_file)
+
+    # Perform some transformations (Example transformation: just passing through the data)
+    transformed = (
+        parquet_data
+        | 'ExampleTransformation' >> beam.Map(lambda record: record)
+    )
+
+    # Write results to BigQuery
+    transformed | 'WriteToBigQuery' >> WriteToBigQuery(
+        output_table,
+        schema='col1:STRING, col2:STRING',  # Adjust schema according to your Parquet files
+        write_disposition=beam.io.BigQueryDisposition.WRITE_APPEND
+    )
+
+    result = p.run()
+    result.wait_until_finish()
+
+
+if __name__ == '__main__':
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        '--input_file',
+        dest='input_file',
+        required=True,
+        help='Input file pattern for Parquet files in GCS.')
+    parser.add_argument(
+        '--output_table',
+        dest='output_table',
+        required=True,
+        help='Output BigQuery table to write results to.')
+
+    known_args, pipeline_args = parser.parse_known_args()
+    run(pipeline_args)
+```
+
+[dataflow_code.py](https://github.com/AyberkYavuz/google_cloud_tools/blob/main/dataflow_code.py)
+
+To create and upload the Dataflow template:
+
+```bash
+python dataflow_code.py \
+    --runner DataflowRunner \
+    --project your-project-id \
+    --staging_location gs://your-bucket/staging \
+    --temp_location gs://your-bucket/temp \
+    --template_location gs://your-bucket/templates/dataflow-template.json \
+    --region us-central1
+```
+
+### Deploy the Airflow DAG
+
+1. Start Airflow Services:
+
+```bash
+airflow webserver -p 8080
+airflow scheduler
+```
+
+2. Activate the DAG:
+
+Open the Airflow web UI, find the **daily_dataflow_trigger** DAG, and activate it.
+
