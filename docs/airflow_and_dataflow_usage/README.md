@@ -143,3 +143,15 @@ Before setting up the Airflow DAG and Dataflow job, ensure you have the followin
 2. **Create BigQuery Dataset and Table:** Define a dataset and table in BigQuery for storing processed data.
 3. **Dataflow Template:** Package your Apache Beam pipeline and upload it as a Flex template to the GCS bucket.
 
+### Airflow Setup
+
+1. Install Apache Airflow and Google Cloud Provider:
+
+```bash
+pip install apache-airflow
+pip install apache-airflow-providers-google
+```
+
+2. Configure Airflow Connections:
+
+Set up a Google Cloud connection (google_cloud_default) in the Airflow Admin UI or use the command line to configure.
