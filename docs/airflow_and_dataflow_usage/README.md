@@ -15,8 +15,6 @@ This repository contains an Apache Airflow DAG designed to trigger a Google Clou
 - [Deployment](#deployment)
   - [Dataflow Template Creation](#dataflow-template-creation)
   - [Deploy the Airflow DAG](#deploy-the-airflow-dag)
-- [Usage](#usage)
-- [License](#license)
 
 ## Scenario
 
@@ -46,7 +44,7 @@ The workflow includes the following components:
    - Once the new folder is identified, the DAG triggers a Dataflow job using the `DataflowStartFlexTemplateOperator`. The Dataflow job is based on a predefined template stored in GCS. It reads the Parquet files from the newly identified folder.
 
 5. **Data Processing in Dataflow**:
-   - The Dataflow job, using Apache Beam, processes the Parquet files. This might include data cleansing, transformation, and enrichment as per the business logic defined in the Beam pipeline (`dataflow_template.py`).
+   - The Dataflow job, using Apache Beam, processes the Parquet files. This might include data cleansing, transformation, and enrichment as per the business logic defined in the Beam pipeline (`dataflow_code.py`).
 
 6. **Writing to BigQuery**:
    - After processing, the Dataflow job writes the transformed data to a specified BigQuery table. The table schema is either predefined or automatically detected if using schema autodetection.
