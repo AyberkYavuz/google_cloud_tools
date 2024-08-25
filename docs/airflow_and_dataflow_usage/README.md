@@ -135,3 +135,11 @@ Before setting up the Airflow DAG and Dataflow job, ensure you have the followin
 * A Google Cloud Storage (GCS) bucket to store Parquet files and Dataflow templates.
 * A BigQuery dataset and table to store processed data.
 * Apache Airflow installed and configured.
+
+
+### Google Cloud Setup
+
+1. **Create a GCS Bucket:** Create a bucket to store Parquet files and Dataflow templates.
+2. **Create BigQuery Dataset and Table:** Define a dataset and table in BigQuery for storing processed data.
+3. **Dataflow Template:** Package your Apache Beam pipeline and upload it as a Flex template to the GCS bucket.
+
