@@ -131,3 +131,17 @@ def trigger_dataflow(data, context):
         response = request.execute()
         print(f'Dataflow job launched for {folder_name}: {response}')
 ```
+
+## Deploying the Cloud Function
+
+Deploy the Cloud Function using the gcloud command:
+
+```python
+gcloud functions deploy google_cloud_function_code \
+    --runtime python39 \
+    --trigger-resource YOUR_BUCKET_NAME \
+    --trigger-event google.storage.object.finalize \
+    --entry-point google_cloud_function_code \
+    --set-env-vars GCP_PROJECT=your-project-id \
+    --region us-central1
+```
