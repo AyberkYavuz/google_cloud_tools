@@ -65,7 +65,7 @@ if __name__ == '__main__':
     run(pipeline_args)
 ```
 
-The pipeline codes also is given as a python file.
+The pipeline code also is given as a python file.
 
 [dataflow_code.py](https://github.com/AyberkYavuz/google_cloud_tools/blob/main/dataflow_code.py)
 
