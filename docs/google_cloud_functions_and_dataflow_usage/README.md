@@ -149,3 +149,10 @@ gcloud functions deploy google_cloud_function_code \
     --set-env-vars GCP_PROJECT=your-project-id \
     --region us-central1
 ```
+
+## Explanation of the Workflow
+
+1. **New Parquet File Upload:** When a new Parquet file is uploaded to the Prices/YYYYMMDD/ folder in your GCS bucket, this triggers the Google Cloud Function.
+2. **Cloud Function Execution:** The Cloud Function extracts the folder path and constructs a Dataflow job request with the necessary parameters, including the location of the Parquet files and the output BigQuery table.
+3. **Dataflow Job Launch:** The Cloud Function launches the Dataflow job, which uses the Apache Beam pipeline template to process the Parquet files and write the results to BigQuery.
+4. **Data Processing in Dataflow:** The Dataflow service (running the Apache Beam pipeline) reads the Parquet files from GCS, performs any necessary transformations, and writes the processed data to the specified BigQuery table.
