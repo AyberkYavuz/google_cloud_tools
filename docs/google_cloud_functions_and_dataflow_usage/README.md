@@ -69,4 +69,19 @@ The pipeline code also is given as a python file.
 
 [dataflow_code.py](https://github.com/AyberkYavuz/google_cloud_tools/blob/main/dataflow_code.py)
 
+## Packaging and Storing Apache Beam Template
+
+To run the Apache Beam pipeline on Dataflow, package your Python script and dependencies, then store it as a template in Google Cloud Storage.
+
+```bash
+python dataflow_code.py \
+    --runner DataflowRunner \
+    --project your-project-id \
+    --staging_location gs://your-bucket/staging \
+    --temp_location gs://your-bucket/temp \
+    --template_location gs://your-bucket/templates/dataflow-template.json \
+    --region us-central1
+```
+
+
 
